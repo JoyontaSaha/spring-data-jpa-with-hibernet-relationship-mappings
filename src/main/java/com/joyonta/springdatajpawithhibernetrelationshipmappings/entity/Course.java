@@ -17,4 +17,5 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseId;
     private String title;
+
 }
