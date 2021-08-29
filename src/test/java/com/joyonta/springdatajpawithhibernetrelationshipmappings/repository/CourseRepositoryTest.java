@@ -1,9 +1,13 @@
 package com.joyonta.springdatajpawithhibernetrelationshipmappings.repository;
 
 import com.joyonta.springdatajpawithhibernetrelationshipmappings.entity.Course;
+import com.joyonta.springdatajpawithhibernetrelationshipmappings.entity.Teacher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,14 +17,29 @@ class CourseRepositoryTest {
     private CourseRepository courseRepository;
 
     @Test
-    public void saveCourse() {
-       /* Course course1 = Course.builder()
-                .title()
-                .teach
+    public void saveCourses() {
+        Teacher teacher = Teacher.builder()
+                .firstName("Jane")
+                .lastName("Doe")
                 .build();
-        insert into COURSE(ID, TEACHER_ID, TITLE) values(1, 1, 'Java 101');
-        insert into COURSE(ID, TEACHER_ID, TITLE) values(2, 1, 'SQL 101');
-        insert into COURSE(ID, TEACHER_ID, TITLE) values(3, 1, 'JPA 101');*/
+
+        Course course1 = Course.builder()
+                .title("Java 101")
+                .teacher(teacher)
+                .build();
+        Course course2 = Course.builder()
+                .title("SQL 101")
+                .teacher(teacher)
+                .build();
+        Course course3 = Course.builder()
+                .title("JPA 101")
+                .teacher(teacher)
+                .build();
+
+
+        Iterable<Course> iterable = Arrays.asList(course1, course2, course3);
+
+        courseRepository.saveAll(iterable);
     }
 
     @Test
