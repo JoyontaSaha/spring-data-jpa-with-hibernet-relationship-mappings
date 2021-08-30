@@ -19,6 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = "teacher")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,10 +43,18 @@ public class Course {
      * Note: It’s a good practice to put the owning side of a relationship in the class/table
      * where the foreign key will be held.
      *
-     *
+     * cascade = CascadeType.ALL, directs jpa that a teacher need to be created before assigning to a course
+     * than persist that teacher as created
+     * optional in Many-to-One side, on the other hand, offers us the option of making it mandatory
+     * optional = false, directs jpa that No courses can be created without a teacher assigned to it
+     * fetch = FetchType.LAZY, directs jpa that while fetching courses data ,
+     * do not fetch teacher data [best practise for Many-to-One relationship mapping]
+     * Many-to-One relationships are eager by DEFAULT
      */
     @ManyToOne(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            optional = false
     )
     @JoinColumn(
             name = "teacherId",

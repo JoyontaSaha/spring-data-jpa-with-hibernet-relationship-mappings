@@ -33,7 +33,7 @@ class TeacherRepositoryTest {
        Teacher teacher = Teacher.builder()
                .firstName("Jane")
                .lastName("Doe")
-               //.courses(Arrays.asList(course1, course2, course3))
+               .courses(Arrays.asList(course1, course2, course3))
                .build();
 
 
@@ -44,13 +44,13 @@ class TeacherRepositoryTest {
 
     @Test
     public void findTeacher() {
-        Teacher foundTeacher = entityManager.find(Teacher.class, 1L);
-        assertThat(foundTeacher.getTeacherId()).isEqualTo(1L);
+        Teacher foundTeacher = entityManager.find(Teacher.class, 12L);
+        assertThat(foundTeacher.getTeacherId()).isEqualTo(12L);
         assertThat(foundTeacher.getLastName()).isEqualTo("Doe");
         assertThat(foundTeacher.getFirstName()).isEqualTo("Jane");
 
-        //assertThat(foundTeacher.getCourses()).extracting(Course::getTitle)
-        //        .containsExactly("Java 101", "SQL 101", "JPA 101");
+        assertThat(foundTeacher.getCourses()).extracting(Course::getTitle)
+                .containsExactly("Java 101", "SQL 101", "JPA 101");
 
     }
 
