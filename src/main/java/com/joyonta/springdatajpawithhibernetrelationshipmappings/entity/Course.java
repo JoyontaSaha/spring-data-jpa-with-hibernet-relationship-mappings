@@ -61,4 +61,9 @@ public class Course {
             referencedColumnName = "teacherId"
     )
     private Teacher teacher;
+    /*@OneToOne(
+            mappedBy = "course",
+            cascade = CascadeType.ALL
+    )
+    private CourseMaterial courseMaterial;*/
 }
