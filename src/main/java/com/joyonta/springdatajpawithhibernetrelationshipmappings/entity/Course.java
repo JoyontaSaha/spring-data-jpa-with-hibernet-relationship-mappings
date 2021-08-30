@@ -50,6 +50,8 @@ public class Course {
      * fetch = FetchType.LAZY, directs jpa that while fetching courses data ,
      * do not fetch teacher data [best practise for Many-to-One relationship mapping]
      * Many-to-One relationships are eager by DEFAULT
+     *
+     * In One-to-One bi-directional relationships referencing entity set optional = true, fetch = FETCHTYPE.EGER by DEFAULT
      */
     @ManyToOne(
             cascade = CascadeType.ALL,
@@ -61,9 +63,9 @@ public class Course {
             referencedColumnName = "teacherId"
     )
     private Teacher teacher;
-    /*@OneToOne(
+    @OneToOne(
             mappedBy = "course",
             cascade = CascadeType.ALL
     )
-    private CourseMaterial courseMaterial;*/
+    private CourseMaterials courseMaterial;
 }
