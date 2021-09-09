@@ -3,6 +3,8 @@ package com.joyonta.springdatajpawithhibernetrelationshipmappings.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is uni-directional Many-to-One Relationship
@@ -19,12 +21,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "teacher")
+@ToString(exclude = {"teacher"})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseId;
+
     private String title;
+
     /**
      * example could be on social media —
      * One to many -> a photo can have many comments,
@@ -52,6 +56,17 @@ public class Course {
      * Many-to-One relationships are eager by DEFAULT
      *
      * In One-to-One bi-directional relationships referencing entity set optional = true, fetch = FETCHTYPE.EGER by DEFAULT
+     *
+     * In Many-to-Many relationships
+     * @JoinTable annotation to set up the table that represents the relationship
+     * In this case relationship table is a StudentsCourses
+     *
+     * @joinColumns defines how to configure the join column (foreign key) of the
+     * owning side of the relationship in the table
+     * In this case owning side is a Course
+     *
+     * @inverseJoinColumns parameter does the same,
+     * but for the referencing side (Student)
      */
     @ManyToOne(
             cascade = CascadeType.ALL,
@@ -63,9 +78,40 @@ public class Course {
             referencedColumnName = "teacherId"
     )
     private Teacher teacher;
+
     @OneToOne(
             mappedBy = "course",
             cascade = CascadeType.ALL
     )
     private CourseMaterials courseMaterial;
+
+    @ManyToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "StudentsCourses",
+            joinColumns = @JoinColumn(
+                    name = "courseId", referencedColumnName = "courseId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "studentId", referencedColumnName = "studentId"
+            )
+    )
+    private List<Student> students;
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void addStudent(Student student) {
+        if(this.students == null) {
+            this.students = new ArrayList<>();
+        }
+        this.students.add(student);
+    }
 }
